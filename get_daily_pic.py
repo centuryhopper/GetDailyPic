@@ -2,9 +2,11 @@ import requests
 import platform
 import pwd
 import os
+import time
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
-FILENAME = 'nasa_pic.png'
+currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
+FILENAME = f'nasa_pic_{currentTime}.png'
 
 
 def get_filename():
