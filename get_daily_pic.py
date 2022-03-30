@@ -3,6 +3,7 @@ import platform
 import pwd
 import os
 import time
+from secrets import Secrets
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -37,8 +38,19 @@ def download_pic_of_day():
 
         print(f"saved picture of the day to {filename}!")
 
-
-if __name__ == '__main__':
+def main():
+    lastDate = ''
+    if not os.path.isfile(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt'):
+        print('creating file')
+        with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'w') as f:
+            f.write('')
+    with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'r') as f:
+        lastDate = f.read()
+        if lastDate == time.strftime("%Y-%m-%d"):
+            print('already ran this')
+            return
+    with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'w') as f:
+        f.write(time.strftime("%Y-%m-%d"))
     download_pic_of_day()
 
     filename = get_filename()
@@ -51,3 +63,9 @@ if __name__ == '__main__':
         # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
 
     os.system(cmd)
+
+
+if __name__ == '__main__':
+    main()
+
+
