@@ -15,10 +15,9 @@ def get_filename():
     if platform.system()=="Linux":
         directory = "/home/" + username + "/Downloads/"
     elif platform.system()=="Darwin":
-        directory = "/Users/" + username + "/Downloads/"
+        directory = "/Users/" + username + "/Documents/Github/nasa_daily_pic_collection/archive/"
 
     return os.path.join(directory, FILENAME)
-
 
 def download_pic_of_day():
     r = requests.get(url)
@@ -63,7 +62,6 @@ def main():
         # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
 
     os.system(cmd)
-
 
 if __name__ == '__main__':
     main()
