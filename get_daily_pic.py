@@ -13,7 +13,7 @@ FILENAME = f'nasa_pic_{currentTime}.png'
 def get_filename():
     username = pwd.getpwuid(os.getuid()).pw_name
     if platform.system()=="Linux":
-        directory = "/home/" + username + "/Downloads/"
+        directory = "/home/" + username + "/Documents/nasa_daily_pic_archive/"
     elif platform.system()=="Darwin":
         directory = "/Users/" + username + "/Documents/Github/nasa_daily_pic_collection/archive/"
 
