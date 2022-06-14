@@ -4,19 +4,22 @@ import pwd
 import os
 import time
 import darkdetect
-from secrets import Secrets
+
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
 FILENAME = f'nasa_pic_{currentTime}.png'
 
+# make sure we're in this file's directory no matter from which directory we run this file
+os.chdir(os.path.dirname(__file__))
+# print(os.getcwd())
+
 def get_filename():
     username = pwd.getpwuid(os.getuid()).pw_name
     if platform.system()=="Linux":
-        directory = "/home/" + username + "/Documents/nasa_daily_pic_archive/"
+        directory = os.getcwd() + '/nasa_daily_pic_collection/'
     elif platform.system()=="Darwin":
         directory = "/Users/" + username + "/Documents/Github/nasa_daily_pic_collection/archive/"
-
     return os.path.join(directory, FILENAME)
 
 def download_pic_of_day():
@@ -39,16 +42,16 @@ def download_pic_of_day():
 
 def main():
     lastDate = ''
-    if not os.path.isfile(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt'):
+    if not os.path.isfile(f'{os.getcwd()}/time_stamp.txt'):
         print('creating file')
-        with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'w') as f:
+        with open(f'{os.getcwd()}/time_stamp.txt', 'w') as f:
             f.write('')
-    with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'r') as f:
+    with open(f'{os.getcwd()}/time_stamp.txt', 'r') as f:
         lastDate = f.read()
         if lastDate == time.strftime("%Y-%m-%d"):
             print('already ran this')
             return
-    with open(f'{Secrets.TIMESTAMP_FILEPATH}time_stamp.txt', 'w') as f:
+    with open(f'{os.getcwd()}/time_stamp.txt', 'w') as f:
         f.write(time.strftime("%Y-%m-%d"))
     download_pic_of_day()
 
@@ -58,13 +61,14 @@ def main():
     # set background
     if platform.system()=="Linux":
         # append -dark if the os theme is dark
-        darkText = '-dark' if darkdetect.isDark() else ''
-        cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
+        # darkText = '-dark' if darkdetect.isDark() else ''
+        # cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
+        pass
     elif platform.system()=="Darwin":
         cmd = "osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file \"" + filename +"\"'"
         # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
 
-    os.system(cmd)
+        os.system(cmd)
 
 if __name__ == '__main__':
     main()
