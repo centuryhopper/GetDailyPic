@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # //// CONFIGURABLE VARIABLES ////////////
 
 # location of wallpapers folder

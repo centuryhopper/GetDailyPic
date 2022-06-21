@@ -1,4 +1,9 @@
+#!/bin/bash
+
+
 # //// CONFIGURABLE VARIABLES ////////////
+
+
 
 # get parent folder of file and activate its path_to_wallpapers variable
 # secrets.sh MUST be in the same directory as this file

@@ -4,6 +4,8 @@ import pwd
 import os
 import time
 import darkdetect
+import subprocess
+from secrets import Secrets
 
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
@@ -63,7 +65,8 @@ def main():
         # append -dark if the os theme is dark
         # darkText = '-dark' if darkdetect.isDark() else ''
         # cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
-        pass
+        # get the latest picture from our nasa pic collections
+        subprocess.run(f'{SHELL_SCRIPT_PATH}./latest.sh')
     elif platform.system()=="Darwin":
         cmd = "osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file \"" + filename +"\"'"
         # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
