@@ -51,7 +51,7 @@ def main():
     with open(f'{os.getcwd()}/time_stamp.txt', 'r') as f:
         lastDate = f.read()
         if lastDate == time.strftime("%Y-%m-%d"):
-            print('already ran this')
+            print(f'{__file__}: already ran this')
             return
     with open(f'{os.getcwd()}/time_stamp.txt', 'w') as f:
         f.write(time.strftime("%Y-%m-%d"))
@@ -63,10 +63,11 @@ def main():
     # set background
     if platform.system()=="Linux":
         # append -dark if the os theme is dark
-        # darkText = '-dark' if darkdetect.isDark() else ''
-        # cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
+        darkText = '-dark' if darkdetect.isDark() else ''
+        cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
+        os.system(cmd)
         # get the latest picture from our nasa pic collections
-        subprocess.run(f'{Secrets.SHELL_SCRIPT_PATH}./latest.sh')
+        # subprocess.run(f'{Secrets.SHELL_SCRIPT_PATH}./latest.sh')
     elif platform.system()=="Darwin":
         cmd = "osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file \"" + filename +"\"'"
         # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
