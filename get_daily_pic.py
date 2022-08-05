@@ -20,8 +20,8 @@ def get_filename():
     username = pwd.getpwuid(os.getuid()).pw_name
     if platform.system()=="Linux":
         directory = os.getcwd() + '/nasa_daily_pic_collection/'
-    elif platform.system()=="Darwin":
-        directory = "/Users/" + username + "/Documents/Github/nasa_daily_pic_collection/archive/"
+    else:
+        return 'ERROR, this program, for now, only works on Linux'
     return os.path.join(directory, FILENAME)
 
 def download_pic_of_day():
@@ -34,9 +34,15 @@ def download_pic_of_day():
     picture_url = r.json()['url']
     if "jpg" not in picture_url:
         print("No image for today, must be a video")
+        with open(f'{os.getcwd()}/no_image_notice.txt', 'w') as f:
+            f.write(f'no image for the date: {time.strftime("%Y-%m-%d")}')
     else:
         pic = requests.get(picture_url , allow_redirects=True)
         filename = get_filename()
+
+        if filename.startswith('ERROR'):
+            print('ERROR, you are not running on Linux')
+            return
 
         open(filename, 'wb').write(pic.content)
 
@@ -57,22 +63,18 @@ def main():
         f.write(time.strftime("%Y-%m-%d"))
     download_pic_of_day()
 
-    filename = get_filename()
-    print(filename)
+    # filename = get_filename()
+    # print(filename)
 
     # set background
     if platform.system()=="Linux":
         # append -dark if the os theme is dark
-        darkText = '-dark' if darkdetect.isDark() else ''
-        cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
-        os.system(cmd)
+        # darkText = '-dark' if darkdetect.isDark() else ''
+        # cmd = f"gsettings set org.gnome.desktop.background picture-uri{darkText} file://" + filename
+        # os.system(cmd)
         # get the latest picture from our nasa pic collections
         # subprocess.run(f'{Secrets.SHELL_SCRIPT_PATH}./latest.sh')
-    elif platform.system()=="Darwin":
-        cmd = "osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file \"" + filename +"\"'"
-        # use absolute path to the image, and not a path that begins with a user path (~/Downloads/image.jpg)!
-
-        os.system(cmd)
+        pass
 
 if __name__ == '__main__':
     main()
