@@ -5,7 +5,7 @@ import os
 import time
 import darkdetect
 import subprocess
-from secrets import Secrets
+# from secrets import Secrets
 
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
