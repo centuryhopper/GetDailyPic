@@ -6,15 +6,21 @@ import time
 import darkdetect
 import subprocess
 # from secrets import Secrets
+import sys
+
+# make sure we're in this file's directory no matter from which directory we run this file
+os.chdir(os.path.dirname(__file__))
+# print(os.getcwd())
+
+sys.path.append('/home/leo_zhang/Documents/GitHub/automate_texting/')
+from automate_texting import send_message
+
 
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
 FILENAME = f'nasa_pic_{currentTime}.png'
 
-# make sure we're in this file's directory no matter from which directory we run this file
-os.chdir(os.path.dirname(__file__))
-# print(os.getcwd())
 
 def get_filename():
     username = pwd.getpwuid(os.getuid()).pw_name
@@ -34,8 +40,10 @@ def download_pic_of_day():
     picture_url = r.json()['url']
     if "jpg" not in picture_url:
         print("No image for today, must be a video")
+        feedback = f'no image for the date: {time.strftime("%Y-%m-%d")}'
+        send_message(feedback)
         with open(f'{os.getcwd()}/no_image_notice.txt', 'w') as f:
-            f.write(f'no image for the date: {time.strftime("%Y-%m-%d")}')
+            f.write(feedback)
     else:
         pic = requests.get(picture_url , allow_redirects=True)
         filename = get_filename()
@@ -46,7 +54,9 @@ def download_pic_of_day():
 
         open(filename, 'wb').write(pic.content)
 
-        print(f"saved picture of the day to {filename}!")
+        feedback = f"saved picture of the day to {filename}!"
+        print(feedback)
+        send_message(feedback)
 
 def main():
     lastDate = ''
@@ -79,6 +89,7 @@ def main():
 if __name__ == '__main__':
     main()
 #    subprocess.run(f'{Secrets.SHELL_SCRIPT_PATH}./latest.sh')
+    pass
 
 
 
