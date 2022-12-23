@@ -1,5 +1,11 @@
-import requests
 import platform
+
+if platform.system() == "Linux":
+    import linux_tools as tools
+elif platform.system() == "Windows":
+    import windows_tools as tools
+
+import requests
 import pwd
 import os
 import time
@@ -12,10 +18,8 @@ import sys
 os.chdir(os.path.dirname(__file__))
 # print(os.getcwd())
 
-sys.path.append('/home/leo_zhang/Documents/GitHub/automate_texting/')
+sys.path.append(tools.AUTOMATE_TEXTING_PATH)
 from automate_texting import send_message
-
-
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -55,7 +59,6 @@ def download_pic_of_day():
         open(filename, 'wb').write(pic.content)
 
         feedback = f"saved picture of the day to {filename}!"
-        print(feedback)
         send_message(feedback)
 
 def main():
@@ -72,9 +75,6 @@ def main():
     with open(f'{os.getcwd()}/time_stamp.txt', 'w') as f:
         f.write(time.strftime("%Y-%m-%d"))
     download_pic_of_day()
-
-    # filename = get_filename()
-    # print(filename)
 
     # set background
     if platform.system()=="Linux":
