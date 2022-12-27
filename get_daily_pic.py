@@ -6,7 +6,6 @@ elif platform.system() == "Windows":
     import windows_tools as tools
 
 import requests
-import pwd
 import os
 import time
 import darkdetect
@@ -16,7 +15,6 @@ import sys
 
 # make sure we're in this file's directory no matter from which directory we run this file
 os.chdir(os.path.dirname(__file__))
-# print(os.getcwd())
 
 sys.path.append(tools.AUTOMATE_TEXTING_PATH)
 from automate_texting import send_message
@@ -27,11 +25,7 @@ FILENAME = f'nasa_pic_{currentTime}.png'
 
 
 def get_filename():
-    username = pwd.getpwuid(os.getuid()).pw_name
-    if platform.system()=="Linux":
-        directory = os.getcwd() + '/nasa_daily_pic_collection/'
-    else:
-        return 'ERROR, this program, for now, only works on Linux'
+    directory = os.getcwd() + '/nasa_daily_pic_collection/'
     return os.path.join(directory, FILENAME)
 
 def download_pic_of_day():
