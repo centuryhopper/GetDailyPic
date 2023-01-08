@@ -16,8 +16,9 @@ import sys
 # make sure we're in this file's directory no matter from which directory we run this file
 os.chdir(os.path.dirname(__file__))
 
-sys.path.append(tools.AUTOMATE_TEXTING_PATH)
-from automate_texting import send_message
+sys.path.append(tools.AUTOMATE_EMAIL_PATH)
+from EmailingTool import EmailTool
+
 
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -39,7 +40,7 @@ def download_pic_of_day():
     if "jpg" not in picture_url:
         print("No image for today, must be a video")
         feedback = f'no image for the date: {time.strftime("%Y-%m-%d")}'
-        send_message(feedback)
+        EmailTool.sendEmail('','', ['leozhang12345678@gmail.com'], 'NASA_Daily_Pic', feedback)
         with open(f'{os.getcwd()}/no_image_notice.txt', 'w') as f:
             f.write(feedback)
     else:
@@ -53,7 +54,7 @@ def download_pic_of_day():
         open(filename, 'wb').write(pic.content)
 
         feedback = f"saved picture of the day to {filename}!"
-        send_message(feedback)
+        EmailTool.sendEmail('','', ['leozhang12345678@gmail.com'], 'NASA_Daily_Pic', feedback)
 
 def main():
     lastDate = ''
