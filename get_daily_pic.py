@@ -19,7 +19,6 @@ os.chdir(os.path.dirname(__file__))
 sys.path.append(tools.AUTOMATE_EMAIL_PATH)
 from EmailingTool import EmailTool
 
-
 url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 currentTime = time.strftime("%Y-%m-%d-%H-%M-%S")
 FILENAME = f'nasa_pic_{currentTime}.png'
